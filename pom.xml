@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>app.jira</groupId>
+    <artifactId>IssueRobot</artifactId>
+    <version>1.1-Snapshot</version>
+    <packaging>jar</packaging>
+    <name>IssueRobot</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <exeFileName>IssueRobot</exeFileName>
+        <project.name>IssueRobot</project.name>
+        <product.title>Application for advanced assignment of performers to the JIRA issues</product.title>
+        <product.year>2019</product.year>
+        <project.version>1.1.0.0</project.version>
+        <jdkVersion>1.8</jdkVersion>
+    </properties>
+
+  <developers>
+    <developer>
+      <id>IssueRobot</id>
+      <name>Valeriy Tyutyunnik</name>
+      <email>valeriytyutyunnik@yandex.ru</email>
+    </developer>
+  </developers>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>net.rcarz</groupId>
+      <artifactId>jira-client</artifactId>
+      <version>0.5</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+ <build>
+  <sourceDirectory>src</sourceDirectory>
+  <testSourceDirectory>testpackages</testSourceDirectory>
+  <testOutputDirectory>target/test-classes</testOutputDirectory>
+
+  <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+            <outputDirectory>${project.build.directory}/lib/</outputDirectory>
+            <overWriteReleases>false</overWriteReleases>
+            <overWriteSnapshots>false</overWriteSnapshots>
+            <overWriteIfNewer>true</overWriteIfNewer>
+        </configuration>
+        <executions>
+            <execution>
+                <id>copy-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>copy-dependencies</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+            <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                    <classpathPrefix>lib/</classpathPrefix>
+                    <classpathLayoutType>simple</classpathLayoutType>
+                    <mainClass>IssueRobot.RobotCore</mainClass>
+                </manifest>
+            </archive>
+        </configuration>
+    </plugin>
+
+    <!-- Оборачивание в exe -->
+    <plugin>
+    <groupId>com.akathist.maven.plugins.launch4j</groupId>
+    <artifactId>launch4j-maven-plugin</artifactId>
+    <version>1.7.25</version>
+    <executions>
+        <execution>
+            <id>l4j-clui</id>
+            <phase>package</phase>
+            <goals>
+                <goal>launch4j</goal>
+            </goals>
+            <configuration>
+                <headerType>console</headerType>
+                <outfile>target/${project.name}.exe</outfile>
+                <jar>target/${project.artifactId}-${project.version}.jar</jar>
+                <errTitle>${product.title}</errTitle>
+                <icon>ib.ico</icon>
+                <classPath>
+                    <mainClass>IssueRobot.RobotCore</mainClass>
+                    <addDependencies>true</addDependencies>
+                    <preCp>anything</preCp>
+                </classPath>
+                <jre>
+                    <minVersion>${jdkVersion}.0</minVersion>
+                </jre>
+                <versionInfo>
+                    <fileVersion>1.1.0.0</fileVersion>
+                    <txtFileVersion>${project.version}</txtFileVersion>
+                    <fileDescription>${product.title}</fileDescription>
+                    <copyright>Copyright © 2019 Valeriy Tyutyunnik</copyright>
+                    <productVersion>1.1.0.0</productVersion>
+                    <txtProductVersion>${project.version}</txtProductVersion>
+                    <productName>${project.name}</productName>
+                    <internalName>${project.name}</internalName>
+                    <originalFilename>${project.name}.exe</originalFilename>
+                </versionInfo>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+  </plugins>
+
+</build>
+
+<repositories>
+    <repository>
+        <id>central</id>
+        <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+
+    <repository>
+        <id>akathist-repository</id>
+        <name>Akathist Repository</name>
+        <url>http://www.9stmaryrd.com/maven</url>
+    </repository>
+</repositories>
+
+<pluginRepositories>
+    <pluginRepository>
+        <id>akathist-repository</id>
+        <name>Akathist Repository</name>
+        <url>http://www.9stmaryrd.com/maven</url>
+    </pluginRepository>
+</pluginRepositories>
+
+</project>

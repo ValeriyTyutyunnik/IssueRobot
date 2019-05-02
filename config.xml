@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+    <!--> Пример XML конфигурации. https://github.com/ValeriyTyutyunnik/IssueRobot <-->
+    <routing_on>false</routing_on>
+    <robot_period>60</robot_period>
+    <jira_url login="1" pwd="1234" max_results="50">https://jira.example.com</jira_url>
+
+    <calendar>
+        <work_days>1,2,3,4,5,6,7</work_days>
+        <start_time>00:00</start_time>
+        <end_time>23:59</end_time>
+    </calendar>
+
+    <projects>
+        <Project_name1 always_parse_comments="true" log_enable="true">
+            <jql>project="Service Desk" and assignee in (null, robot)</jql>
+            <add_comment>Привет!</add_comment>
+            <add_labels>
+                <label>label1</label>
+                <label>label2</label>
+            </add_labels>
+            <edit_fields>
+                <customfield_100500>100500</customfield_100500>
+            </edit_fields>
+            <tomita_config fact_field="Fact">config.proto</tomita_config>
+            <blocks>
+                <block_name1>
+                    <assignees>
+                        <assignee>assignee1</assignee>
+                        <assignee>assignee2</assignee>
+                    </assignees>
+                    <keywords>
+                        <keyword weight ="3">key1</keyword>
+                        <keyword weight ="1">key2</keyword>
+                        <keyword weight="-3">key3</keyword>
+                        <keyword>keyn</keyword>
+                    </keywords>
+                    <edit_fields>
+                        <customfield_n>1</customfield_n>
+                    </edit_fields>
+                </block_name1>
+                <block_name2>
+                    <assignees>
+                        <assignee>assignee3</assignee>
+                    </assignees>
+                    <keywords>
+                        <keyword weight ="-2">key2</keyword>
+                        <keyword weight="3">key4</keyword>
+                        <keyword>keyn</keyword>
+                    </keywords>
+                    <reporters>
+                        <reporter>reporter1</reporter>
+                        <reporter weight="2">reporter2</reporter>
+                    </reporters>
+                    <labels>
+                        <label weight="10">some label</label>
+                    </labels>
+                    <edit_fields>
+                        <customfield_n>2</customfield_n>
+                    </edit_fields>
+                </block_name2>
+            </blocks>
+        </Project_name1>
+        <Project_name2 reporter_may_be_assignee="false" log_enable="false">
+            <jql>status="Code Review" and assignee=null</jql>
+            <blocks>
+                <forewer_lone>
+                    <assignees>
+                        <assignee>Reviewer1</assignee>
+                        <assignee>Reviewer2</assignee>
+                    </assignees>
+                </forewer_lone>
+            </blocks>
+        </Project_name2>
+    </projects>
+</config>

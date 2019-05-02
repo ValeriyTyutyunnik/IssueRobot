@@ -1,0 +1,16 @@
+encoding "UTF-8";
+
+TTextMinerConfig {
+  Dictionary = "mydic.gzt";
+
+  Input =  { Encoding = "Cp1251"; }
+  Output = { Encoding = "Cp1251"; }
+
+  Articles = [
+     { Name = "facts_extraction_rules" }
+  ]
+
+  Facts = [
+     { Name = "Facts"}
+  ]
+}
