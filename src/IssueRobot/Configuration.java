@@ -50,9 +50,9 @@ public class Configuration {
     }
    
     /** returns node attribute's integer value or default value if attr doesn't exists
-     * @param node {Node} checking node
-     * @param attr_name {String} - attribute name sought
-     * @param default_value {int} - default value that'll be returned if attr doesn't exists
+     * @param node checking node
+     * @param attr_name - attribute name sought
+     * @param default_value - default value that'll be returned if attr doesn't exists
      * @return attribute integer value
      */
     private static int getAttrInt(Node node, String attr_name, int default_value) {
@@ -64,8 +64,8 @@ public class Configuration {
     }
     
     /** returns node's text content value
-     * @param node {Node} checking node
-     * @param attr_name {String} - attribute name sought
+     * @param node checking node
+     * @param attr_name - attribute name sought
      * @return attribute text content value or empty String if text doesn't exists
      */
     private static String getAttr(Node node, String attr_name) {
@@ -78,16 +78,16 @@ public class Configuration {
     }
     
     /** returns true if attr text equals "true"
-     * @param node {Node} checking node
-     * @param attr_name {String} - attribute name sought
+     * @param node checking node
+     * @param attr_name - attribute name sought
      */
     private static boolean getAttrBool(Node node, String attr_name) {
         return "true".equals(getAttr(node, attr_name).toLowerCase());
     }
     
     /** returns trimed text content
-     * @param node {Node} checking node
-     * @param attr_name {String} - attribute name sought
+     * @param node checking node
+     * @param attr_name - attribute name sought
      */
     private static String getText(Node node) {
         return node.getTextContent().trim();
@@ -160,16 +160,16 @@ public class Configuration {
                     case "projects":
                         NodeList projects = config_node.getChildNodes();
                         for (int j = 0; j < projects.getLength(); j++) {
-                            Node project = projects.item(j);
-                            if (project.getNodeType() == Node.ELEMENT_NODE) {
-                                Project Project = new Project(project.getNodeName());
-                                Projects.add(Project);
+                            Node project_node = projects.item(j);
+                            if (project_node.getNodeType() == Node.ELEMENT_NODE) {
+                                Project project = new Project(project_node.getNodeName());
+                                Projects.add(project);
                                 
-                                Project.always_parse_comments = getAttrBool(project, "always_parse_comments");
-                                Project.reporter_may_be_assignee = getAttrBool(project, "reporter_may_be_assignee");
-                                Project.log_enable = getAttrBool(project, "log_enable");
+                                project.always_parse_comments = getAttrBool(project_node, "always_parse_comments");
+                                project.reporter_cannot_be_assigned = getAttrBool(project_node, "reporter_cannot_be_assigned");
+                                project.log_enable = getAttrBool(project_node, "log_enable");
                                 
-                                NodeList project_conf = project.getChildNodes();
+                                NodeList project_conf = project_node.getChildNodes();
 
                                 for (int k = 0; k < project_conf.getLength(); k++) {
                                     Node project_item = project_conf.item(k);
@@ -177,7 +177,7 @@ public class Configuration {
                                         switch (project_item.getNodeName()) {
                                             case "jql":
                                                 if (!"".equals(getText(project_item))) {
-                                                    Project.jql = getText(project_item);
+                                                    project.jql = getText(project_item);
                                                 }
                                                 break;
 
@@ -187,13 +187,13 @@ public class Configuration {
                                                     Node label = jira_labels.item(l);
                                                     if (label.getNodeType() == Node.ELEMENT_NODE &&
                                                         !"".equals(getText(label))) {
-                                                        Project.add_labels.add(getText(label));
+                                                        project.add_labels.add(getText(label));
                                                     }
                                                 }
                                                 break;
                                             case "add_comment":
                                                 if (!"".equals(getText(project_item))) {
-                                                    Project.add_comment = getText(project_item);
+                                                    project.add_comment = getText(project_item);
                                                 }
                                                 break;
                                             case "edit_fields":
@@ -203,17 +203,17 @@ public class Configuration {
                                                     if (field.getNodeType() == Node.ELEMENT_NODE
                                                         && !"".equals( getText(field))) {
                                                             Pair<String, String> edits = new Pair<String, String>(field.getNodeName(), getText(field));
-                                                            Project.EditFields.add(edits);
+                                                            project.EditFields.add(edits);
                                                     }
                                                 }
                                                 break;
                                             case "tomita_config":
                                                 if (!"".equals(getText(project_item))) {
-                                                    Project.tomitaConfig = getText(project_item);
+                                                    project.tomitaConfig = getText(project_item);
 
                                                     Node attr = project_item.getAttributes().getNamedItem("fact_field");
                                                     if (attr != null && !"".equals(getText(attr))) {
-                                                        Project.TomitaFactField = getText(attr);
+                                                        project.TomitaFactField = getText(attr);
                                                     }
                                                 }
                                                 break;
@@ -221,12 +221,12 @@ public class Configuration {
                                             case "blocks":
                                                 NodeList blocks = project_item.getChildNodes();
                                                 for (int l = 0; l < blocks.getLength(); l++) { 
-                                                    Node block = blocks.item(l);
-                                                    if (block.getNodeType() == Node.ELEMENT_NODE) {
-                                                        Block Block = new Block(block.getNodeName());
-                                                        Project.blocks.add(Block);
+                                                    Node block_node = blocks.item(l);
+                                                    if (block_node.getNodeType() == Node.ELEMENT_NODE) {
+                                                        Block block = new Block(block_node.getNodeName());
+                                                        project.blocks.add(block);
 
-                                                        NodeList block_conf = block.getChildNodes();
+                                                        NodeList block_conf = block_node.getChildNodes();
                                                         for (int n=0; n < block_conf.getLength(); n++) {
                                                             Node block_item = block_conf.item(n);
                                                             if (block_item.getNodeType() == Node.ELEMENT_NODE) {
@@ -239,7 +239,7 @@ public class Configuration {
                                                                             if (assignee.getNodeType() == Node.ELEMENT_NODE
                                                                                 && "assignee".equals(assignee.getNodeName())
                                                                                 && !"".equals(getText(assignee))) {
-                                                                                    Block.Assignees.add(getText(assignee));
+                                                                                    block.Assignees.add(getText(assignee));
                                                                             }
                                                                         }
                                                                         break;
@@ -251,7 +251,7 @@ public class Configuration {
                                                                             if (keyword.getNodeType() == Node.ELEMENT_NODE
                                                                                 && "keyword".equals(keyword.getNodeName())
                                                                                 && !"".equals(getText(keyword))) {
-                                                                                    Block.Keys.put(getText(keyword).toLowerCase()
+                                                                                    block.Keys.put(getText(keyword).toLowerCase()
                                                                                                  , getAttrInt(keyword, "weight", 1));
                                                                             }
                                                                         }
@@ -264,7 +264,7 @@ public class Configuration {
                                                                             if (reporter.getNodeType() == Node.ELEMENT_NODE
                                                                                 && "reporter".equals(reporter.getNodeName())
                                                                                 && !"".equals(getText(reporter))) {
-                                                                                    Block.Reporters.put(getText(reporter)
+                                                                                    block.Reporters.put(getText(reporter)
                                                                                                       , getAttrInt(reporter, "weight", 1));
                                                                             }
                                                                         }
@@ -277,7 +277,7 @@ public class Configuration {
                                                                             if (label.getNodeType() == Node.ELEMENT_NODE
                                                                                 && "label".equals(label.getNodeName())
                                                                                 && !"".equals(getText(label))) {
-                                                                                    Block.Labels.put(getText(label)
+                                                                                    block.Labels.put(getText(label)
                                                                                                    , getAttrInt(label, "weight", 1));
                                                                             }
                                                                         }
@@ -291,9 +291,12 @@ public class Configuration {
                                                                                 && !"".equals( getText(field))) {
                                                                                     @SuppressWarnings("unchecked")
                                                                                     Pair<String, String> edits = new Pair(field.getNodeName(), getText(field));
-                                                                                    Block.EditFields.add(edits);
+                                                                                    block.EditFields.add(edits);
                                                                             }
                                                                         }
+                                                                        break;
+                                                                    default:
+                                                                        Logging.PrintWarn("Unknown tag " + block_item.getNodeName() + " in block " + block.BlockName);
                                                                         break;
                                                                 } // end switch blocks
                                                             }
@@ -301,13 +304,19 @@ public class Configuration {
                                                     }
                                                 }
                                                 break; // blocks
+                                            default:
+                                                Logging.PrintWarn("Unknown tag " + project_item.getNodeName() + " in project " + project.Name);
+                                                break;
                                         } // end switch projects
                                     }
                                 }
                             }
                         }
                         break; // projects
-                } // end switch cofig
+                    default:
+                        Logging.PrintWarn("Unknown tag " + config_node.getNodeName());
+                        break;
+                } // end switch config
             }
         }
     

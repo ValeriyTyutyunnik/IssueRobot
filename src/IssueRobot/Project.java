@@ -45,8 +45,8 @@ public class Project {
     ArrayList<Pair<String, String>> EditFields  = new ArrayList<Pair<String, String>>();
 
     boolean always_parse_comments = false;
-    boolean reporter_may_be_assignee = false;
-    boolean log_enable = true;
+    boolean reporter_cannot_be_assigned = false;
+    boolean log_enable = false;
     boolean changing_without_routing = true;
     
     String tomitaConfig = "config.proto";
@@ -63,7 +63,7 @@ public class Project {
     }
     
     /** Checks the project and writes the reason why the project is not valid
-     * @return {boolean}
+     * @return
      */
     public boolean isValid() {
         boolean result = true;
@@ -104,7 +104,7 @@ public class Project {
     }
     
     /** returns text from Issue summary and description 
-     * @return {String}
+     * @return
      */
     private String get_parse_text (Issue issue) {
         StringBuilder builder = new StringBuilder(200);
@@ -120,7 +120,7 @@ public class Project {
     }
     
     /** returns text from Issue comments 
-     * @return {String}
+     * @return
      */
     private String get_parse_comment (Issue issue) {
         StringBuilder builder = new StringBuilder(200);
@@ -140,7 +140,7 @@ public class Project {
      * Returns the index of the block to which the issue should be assigned.
      * If several blocks have the same weight - returns random among them.
      * @param issue
-     * @return {int} block index
+     * @return block index
      */
     public int findBlockToRoute(Issue issue) {
         
@@ -241,7 +241,7 @@ public class Project {
                 Block block = blocks.get(next_block);
                 String new_assignee = block.getNextAssignee();
 
-                if (reporter_may_be_assignee && issue.getReporter() != null
+                if (reporter_cannot_be_assigned && issue.getReporter() != null
                     && issue.getReporter().getName().equals(new_assignee)) {
                     new_assignee = block.switch_executor();
                 }

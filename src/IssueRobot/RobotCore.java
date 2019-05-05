@@ -33,7 +33,10 @@ import net.rcarz.jiraclient.JiraException;
 
 public class RobotCore {
     ArrayList<Project> projects = new ArrayList<Project>();
-    boolean ConsoleAuthDataPrompt = true;
+
+    private boolean ConsoleAuthDataPrompt = true;
+    private JiraClient jira;
+
     static boolean isRouting = false;
 
     final String load_fields = "summary,description,assignee,reporter,comment,labels";
@@ -41,7 +44,6 @@ public class RobotCore {
     static int jira_max_results = 50;
     static int robot_period = 0;
     
-    JiraClient jira;
     static String login = "";
     static char pwd[];
     

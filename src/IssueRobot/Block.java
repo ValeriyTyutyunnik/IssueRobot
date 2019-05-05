@@ -50,7 +50,7 @@ public class Block {
     ArrayList<Pair<String, String>> EditFields  = new ArrayList<Pair<String, String>>();
     
     /** switch current and next executor in queue
-     * @return {String} - next assigne
+     * @return next assigne
      */
     public String switch_executor() {
         if (Assignees.isEmpty()) {
@@ -79,7 +79,7 @@ public class Block {
 
     /**
      * returns next assignee in queue
-     * @return {String}
+     * @return
      */
     public String getNextAssignee() {
         if (Assignees.isEmpty()) {
@@ -95,7 +95,7 @@ public class Block {
     
     /**
      * returns block weight by keywords
-     * @return {int}
+     * @return
      */
     public int checkTicketKeywords(HashSet<String> facts) {
         int points = 0;
@@ -108,7 +108,7 @@ public class Block {
     
     /**
      * returns block weight by labels
-     * @return {int}
+     * @return
      */
     public int checkTicketLabels(List<String> labels) {
         int points = 0;
@@ -122,7 +122,7 @@ public class Block {
     
     /**
      * returns block weight by reporter
-     * @return {int}
+     * @return
      */
     public int checkTicketReporter(String reporter)
     {

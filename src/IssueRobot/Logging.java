@@ -81,7 +81,7 @@ public class Logging {
                 sb.append("old assignee").append(delim);
                 sb.append("reporter").append(delim);
                 sb.append("block").append(delim);
-                sb.append("new asssignee").append(delim);
+                sb.append("new assignee").append(delim);
                 sb.append("blocks points").append(delim);
                 sb.append("summary").append(delim);
                 sb.append("labels").append(delim);

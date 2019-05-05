@@ -88,7 +88,7 @@ public class Tomita {
     
     /**
      * Converts string to XML document
-     * @param {String} xml
+     * @param xml
      * @return Document
      * @throws Exception 
      */
@@ -105,7 +105,7 @@ public class Tomita {
  
     /**
      * parse text with Tomita parser
-     * @param {String} inputString
+     * @param inputString
      * @return 
      * @throws IOException
      * @throws InterruptedException 
@@ -120,7 +120,7 @@ public class Tomita {
 
      /**
      * Returns facts from String
-     * @param {String} TextToParse
+     * @param TextToParse
      * @throws Exception 
      */
     public HashSet<String> parseFactsFromText(String TextToParse) throws Exception {

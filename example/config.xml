@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <config>
-    <!--> Пример XML конфигурации. https://github.com/ValeriyTyutyunnik/IssueRobot <-->
+    <!--> Пример XML конфигурации. https://github.com/ValeriyTyutyunnik/IssueRobot
+          Разбора данной конфигурации и описание всех тэгов находится в wiki <-->
     <routing_on>false</routing_on>
-    <robot_period>60</robot_period>
-    <jira_url login="1" pwd="1234" max_results="50">https://jira.example.com</jira_url>
+    <robot_period>300</robot_period>
+    <jira_url login="login" pwd="1234" max_results="50">https://jira.example.com</jira_url>
 
     <calendar>
         <work_days>1,2,3,4,5,6,7</work_days>
@@ -12,17 +13,33 @@
     </calendar>
 
     <projects>
-        <Project_name1 always_parse_comments="true" log_enable="true">
-            <jql>project="Service Desk" and assignee in (null, robot)</jql>
-            <add_comment>Привет!</add_comment>
+        <Project1 log_enable="false">
+            <jql>project = "Test" and created >= -5m</jql>
+            <add_comment>New task was created</add_comment>
+            <edit_fields>
+                <customfield_1>100500</customfield_1>
+            </edit_fields>
+        </Project1>
+
+        <Project2 reporter_cannot_be_assigned="true">
+            <jql>project = "DEV" and status = "Code Review" and assignee = null</jql>
+            <blocks>
+                <only_one_block>
+                    <assignees>
+                        <assignee>Reviewer1</assignee>
+                        <assignee>Reviewer2</assignee>
+                    </assignees>
+                </only_one_block>
+            </blocks>
+        </Project2>
+
+        <Project3 reporter_cannot_be_assigned="false" always_parse_comments="true" log_enable="true">
+            <jql>project="TEST" and status = "OPEN" and assignee = null</jql>
             <add_labels>
                 <label>label1</label>
                 <label>label2</label>
             </add_labels>
-            <edit_fields>
-                <customfield_100500>100500</customfield_100500>
-            </edit_fields>
-            <tomita_config fact_field="Fact">config.proto</tomita_config>
+            <tomita_config fact_field="FactResult">config_project3.proto</tomita_config>
             <blocks>
                 <block_name1>
                     <assignees>
@@ -36,7 +53,8 @@
                         <keyword>keyn</keyword>
                     </keywords>
                     <edit_fields>
-                        <customfield_n>1</customfield_n>
+                        <customfield_2>1</customfield_2>
+                        <customfield_3>$new_assignee</customfield_3>
                     </edit_fields>
                 </block_name1>
                 <block_name2>
@@ -54,23 +72,15 @@
                     </reporters>
                     <labels>
                         <label weight="10">some label</label>
+                        <label weight="-10">some label2</label>
                     </labels>
                     <edit_fields>
-                        <customfield_n>2</customfield_n>
+                        <customfield_2>2</customfield_2>
+                        <customfield_3>$new_assignee</customfield_3>
                     </edit_fields>
                 </block_name2>
             </blocks>
-        </Project_name1>
-        <Project_name2 reporter_may_be_assignee="false" log_enable="false">
-            <jql>status="Code Review" and assignee=null</jql>
-            <blocks>
-                <forewer_lone>
-                    <assignees>
-                        <assignee>Reviewer1</assignee>
-                        <assignee>Reviewer2</assignee>
-                    </assignees>
-                </forewer_lone>
-            </blocks>
-        </Project_name2>
+        </Project3>
+
     </projects>
 </config>

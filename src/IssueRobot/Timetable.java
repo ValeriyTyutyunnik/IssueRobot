@@ -44,7 +44,7 @@ public class Timetable {
 
     /**
      * Check is it working time now
-     * @return {boolean}
+     * @return
      */
     public static boolean isWorkingDay() {
         boolean res = false;
